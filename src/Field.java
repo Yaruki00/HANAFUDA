@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Field {
-	private ArrayList<Card> cards;
-	public Field(ArrayList<Card> cards) {
-		this.cards = cards;
+	private List<Card> cards;
+	public Field(List<Card> cards) {
+		this.cards = new ArrayList<Card>(24);
+		this.cards.addAll(cards);
 	}
 	public void addCard(Card c) {
 		cards.add(c);
@@ -11,7 +13,7 @@ public class Field {
 	public void removeCard(Card c) {
 		cards.remove(c);
 	}
-	public ArrayList<Card> getCardList() {
+	public List<Card> getCardList() {
 		return cards;
 	}
 }
