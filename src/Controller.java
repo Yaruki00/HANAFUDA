@@ -9,24 +9,30 @@ public class Controller {
 		// set field cards
 		Field field = new Field(yama.subList(0, 8));
 		yama.removeAll(field.getCardList());
-		// set player cards
-		Player first = new You(yama.subList(0, 8));
-		yama.removeAll(first.getCardList());
-		Player second = new Com(yama.subList(0, 8));
-		yama.removeAll(second.getCardList());
+		// select first or second
+		Player first = null;
+		Player second = null;
+		if(IO.setOrder() == 1) {
+			first = new You(yama.subList(0, 8));
+			yama.removeAll(first.getCardList());
+			second = new Com(yama.subList(0, 8));
+			yama.removeAll(second.getCardList());
+		} else {
+			first = new Com(yama.subList(0, 8));
+			yama.removeAll(first.getCardList());
+			second = new You(yama.subList(0, 8));
+			yama.removeAll(second.getCardList());
+		}
 		// game start
 		int turn = 0;
 		Player winner = null;
 		while (turn < 8) {
+			turn += 1;
 			// first's turn
-			System.out.println("field:");
-			for (Card fieldCard : field.getCardList()) {
-				System.out.println("   " + fieldCard.getName());
-			}
-			System.out.println("your card:");
-			for (int i = 0; i < first.getCardList().size(); i++) {
-				System.out.println(i + ": "
-						+ first.getCardList().get(i).getName());
+			IO.showOnesTurn(first.getName());
+			IO.showField(field.getCardList());
+			if(first.getName() == "You") {
+				IO.showHand(first.getCardList());
 			}
 			// open card
 			Card open = first.openCard();
@@ -41,11 +47,8 @@ public class Controller {
 			// draw card
 			Card draw = yama.get(0);
 			yama.remove(draw);
-			System.out.println("draw card: " + draw.getName());
-			System.out.println("field:");
-			for (Card fieldCard : field.getCardList()) {
-				System.out.println("   " + fieldCard.getName());
-			}
+			IO.showDraw(draw.getName());
+			IO.showField(field.getCardList());
 			findMach(first, draw, field);
 			// finish?
 			if (first.canFinish()) {
@@ -55,9 +58,10 @@ public class Controller {
 				}
 			}
 			// second's turn
-			System.out.println("field:");
-			for (Card fieldCard : field.getCardList()) {
-				System.out.println("   " + fieldCard.getName());
+			IO.showOnesTurn(second.getName());
+			IO.showField(field.getCardList());
+			if(second.getName() == "You") {
+				IO.showHand(second.getCardList());
 			}
 			// open card
 			open = second.openCard();
@@ -72,11 +76,8 @@ public class Controller {
 			// draw card
 			draw = yama.get(0);
 			yama.remove(draw);
-			System.out.println("draw card: " + draw.getName());
-			System.out.println("field:");
-			for (Card fieldCard : field.getCardList()) {
-				System.out.println("   " + fieldCard.getName());
-			}
+			IO.showDraw(draw.getName());
+			IO.showField(field.getCardList());
 			findMach(second, draw, field);
 			// finish?
 			if (second.canFinish()) {
@@ -86,11 +87,7 @@ public class Controller {
 				}
 			}
 		}
-		if(winner == null) {
-			System.out.println("draw game");
-		} else {
-			System.out.println(winner.getName() + " won!!");
-		}
+		IO.showWinner(winner);
 	}
 
 	private ArrayList<Card> generateYama() {
@@ -177,22 +174,20 @@ public class Controller {
 			}
 		}
 		if (available.size() == 0) {
-			System.out.println(p.getName() + " couldn't get anything...");
+			IO.noGet(p.getName());
 			p.removeCard(c);
 			field.addCard(c);
 		} else if (available.size() == 1) {
-			System.out.println(p.getName() + " got " + available.get(0).getName()
-					+ " and " + c.getName() + "!");
+			IO.getPair(p.getName(), available.get(0).getName(), c.getName());
 			p.addPair(available.get(0), c);
 			p.removeCard(c);
 			field.removeCard(available.get(0));
 		} else {
-			Card choise = p.choiseCard(available);
-			System.out.println(p.getName() + " got " + choise.getName() + " and "
-					+ c.getName() + "!");
-			p.addPair(choise, c);
+			Card choice = p.choiceCard(available);
+			IO.getPair(p.getName(), choice.getName(), c.getName());
+			p.addPair(choice, c);
 			p.removeCard(c);
-			field.removeCard(choise);
+			field.removeCard(choice);
 		}
 	}
 

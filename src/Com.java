@@ -11,12 +11,12 @@ public class Com extends Player {
 	public Card openCard() {
 		Random rnd = new Random();
 		int idx = rnd.nextInt(haveCards.size());
-		System.out.println("Com opend " + haveCards.get(idx).getName());
+		IO.comOpen(haveCards.get(idx).getName());
 		return haveCards.get(idx);
 	}
 
 	@Override
-	public Card choiseCard(List<Card> available) {
+	public Card choiceCard(List<Card> available) {
 		Random rnd = new Random();
 		return available.get(rnd.nextInt(available.size()));
 	}

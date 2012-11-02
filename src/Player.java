@@ -1,16 +1,17 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
 	protected String name;
 	protected List<Card> haveCards, gotCards;
-	protected int[] flags;
+	protected int[] flags, koikoi;
 
 	public String getName() {
 		return name;
+	}
+	
+	public int[] getKoikoi() {
+		return koikoi;
 	}
 	
 	public Player(List<Card> cards) {
@@ -18,6 +19,7 @@ public class Player {
 		haveCards.addAll(cards);
 		gotCards = new ArrayList<Card>(40);
 		flags = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		koikoi = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	}
 
 	public void removeCard(Card c) {
@@ -39,74 +41,78 @@ public class Player {
 
 	public boolean canFinish() {
 		boolean finish = false;
-		if (flags[0] == 3) {
-			System.out.println("sanko!!");
+		if (flags[0] == 3 && koikoi[0] == 0) {
+			IO.completeYaku(getName(), "sanko");
+			koikoi[0] += 1;
 			finish = true;
 		}
-		if (flags[0] == 4) {
-			System.out.println("yonko!!");
+		if (flags[0] == 4 && koikoi[0] == 1) {
+			IO.completeYaku(getName(), "yonko");
+			koikoi[0] += 1;
 			finish = true;
 		}
-		if (flags[0] == -2) {
-			System.out.println("ame yonko!!");
+		if (flags[0] == -2 && koikoi[0] == 0 || flags[0] == -2 && koikoi[0] == 1) {
+			IO.completeYaku(getName(), "ame yonko");
+			koikoi[0] += 1;
 			finish = true;
 		}
-		if (flags[0] == -1) {
-			System.out.println("goko!!");
+		if (flags[0] == -1 && koikoi[0] == 2) {
+			IO.completeYaku(getName(), "goko");
+			koikoi[0] += 1;
 			finish = true;
 		}
 		if (flags[1] == 2) {
-			System.out.println("hanamizake!!");
+			IO.completeYaku(getName(), "hanamizake");
+			koikoi[1] += 1;
+			flags[1] = 0;
 			finish = true;
 		}
 		if (flags[2] == 2) {
-			System.out.println("tsukimizake!!");
+			IO.completeYaku(getName(), "tsukimizake");
+			koikoi[2] += 1;
+			flags[2] = 0;
 			finish = true;
 		}
 		if (flags[3] == 3) {
-			System.out.println("inoshikacho!!");
+			IO.completeYaku(getName(), "inoshikacho");
+			koikoi[3] += 1;
+			flags[3] = 0;
 			finish = true;
 		}
 		if (flags[4] == 3) {
-			System.out.println("akatan!!");
+			IO.completeYaku(getName(), "akatan");
+			koikoi[4] += 1;
+			flags[4] = 0;
 			finish = true;
 		}
 		if (flags[5] == 3) {
-			System.out.println("aotan!!");
+			IO.completeYaku(getName(), "aotan");
+			koikoi[5] += 1;
+			flags[5] = 0;
 			finish = true;
 		}
 		if (flags[6] >= 5) {
-			System.out.println("tan!!");
+			IO.completeYaku(getName(), "tan");
+			koikoi[6] += flags[6] - 4;
+			flags[6] = 4;
 			finish = true;
 		}
 		if (flags[7] >= 5) {
-			System.out.println("tane!!");
+			IO.completeYaku(getName(), "tane");
+			koikoi[7] += flags[7] - 4;
+			flags[7] = 4;
 			finish = true;
 		}
 		if (flags[8] >= 10) {
-			System.out.println("kasu!!");
+			IO.completeYaku(getName(), "kasu");
+			koikoi[8] += flags[8] - 9;
+			flags[8] = 9;
 			finish = true;
 		}
 		return finish;
 	}
 
 	public boolean willFinish() {
-		System.out.println("will you finish this game?");
-		System.out.println("0: yes");
-		System.out.println("1: no");
-		System.out.print("your choise: ");
-		System.out.flush();
-		BufferedReader r = new BufferedReader(new InputStreamReader(System.in), 1);
-		try {
-			String input = r.readLine();
-			if (Integer.valueOf(input) == 0) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 	
@@ -114,7 +120,7 @@ public class Player {
 		return null;
 	}
 
-	public Card choiseCard(List<Card> available) {
+	public Card choiceCard(List<Card> available) {
 		return null;
 	}
 }
