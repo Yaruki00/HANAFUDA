@@ -10,6 +10,7 @@ public class IO {
 			System.out.println("which do you like?");
 			System.out.println("1: first");
 			System.out.println("2: second");
+			System.out.println("0: battle");
 			System.out.print("your choise: ");
 			System.out.flush();
 			BufferedReader r = new BufferedReader(new InputStreamReader(
@@ -20,13 +21,15 @@ public class IO {
 					return 1;
 				} else if (Integer.valueOf(input) == 2) {
 					return 2;
+				} else if (Integer.valueOf(input) == 0) {
+					return 0;
 				} else {
-					System.out.println("please type \"1\" or \"2\"");
+					System.out.println("please type \"1\" or \"2\" or \"0\"");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (NumberFormatException e) {
-				System.out.println("please type \"1\" or \"2\"");
+				System.out.println("please type \"1\" or \"2\" or \"0\"");
 			}
 		}
 	}

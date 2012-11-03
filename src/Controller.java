@@ -1,27 +1,25 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Controller {
 	public void game() {
 		// generate yamafuda
-		List<Card> yama = generateYama();
+		Yamafuda yama = new Yamafuda();
 		// set field cards
-		Field field = new Field(yama.subList(0, 8));
-		yama.removeAll(field.getCardList());
+		Field field = new Field(yama.drawCards(8));
 		// select first or second
 		Player first = null;
 		Player second = null;
-		if(IO.setOrder() == 1) {
-			first = new You(yama.subList(0, 8));
-			yama.removeAll(first.getCardList());
-			second = new Com(yama.subList(0, 8));
-			yama.removeAll(second.getCardList());
+		int order = IO.setOrder();
+		if (order == 1) {
+			first = new You(yama.drawCards(8));
+			second = new Com(yama.drawCards(8));
+		} else if (order == 2) {
+			first = new Com(yama.drawCards(8));
+			second = new You(yama.drawCards(8));
 		} else {
-			first = new Com(yama.subList(0, 8));
-			yama.removeAll(first.getCardList());
-			second = new You(yama.subList(0, 8));
-			yama.removeAll(second.getCardList());
+			first = new You(yama.drawCards(8));
+			second = new You(yama.drawCards(8));
 		}
 		// game start
 		int turn = 0;
@@ -31,7 +29,7 @@ public class Controller {
 			// first's turn
 			IO.showOnesTurn(first.getName());
 			IO.showField(field.getCardList());
-			if(first.getName() == "You") {
+			if (first.getName() == "You") {
 				IO.showHand(first.getCardList());
 			}
 			// open card
@@ -45,8 +43,7 @@ public class Controller {
 				}
 			}
 			// draw card
-			Card draw = yama.get(0);
-			yama.remove(draw);
+			Card draw = yama.drawCard();
 			IO.showDraw(draw.getName());
 			IO.showField(field.getCardList());
 			findMach(first, draw, field);
@@ -60,7 +57,7 @@ public class Controller {
 			// second's turn
 			IO.showOnesTurn(second.getName());
 			IO.showField(field.getCardList());
-			if(second.getName() == "You") {
+			if (second.getName() == "You") {
 				IO.showHand(second.getCardList());
 			}
 			// open card
@@ -74,8 +71,7 @@ public class Controller {
 				}
 			}
 			// draw card
-			draw = yama.get(0);
-			yama.remove(draw);
+			draw = yama.drawCard();
 			IO.showDraw(draw.getName());
 			IO.showField(field.getCardList());
 			findMach(second, draw, field);
@@ -88,82 +84,6 @@ public class Controller {
 			}
 		}
 		IO.showWinner(winner);
-	}
-
-	private ArrayList<Card> generateYama() {
-		ArrayList<Card> yama = new ArrayList<Card>(48);
-		Random rnd = new Random();
-		Card c[] = {
-				new Card(1, "01_tsuru", new int[] { 1, 0, 0, 0, 0, 0, 0, 0, 0 }),
-				new Card(1, "01_akatan",
-						new int[] { 0, 0, 0, 0, 1, 0, 1, 0, 0 }),
-				new Card(1, "01_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(1, "01_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(2, "02_uguisu",
-						new int[] { 0, 0, 0, 0, 0, 0, 0, 1, 0 }),
-				new Card(2, "02_akatan",
-						new int[] { 0, 0, 0, 0, 1, 0, 1, 0, 0 }),
-				new Card(2, "02_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(2, "02_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(3, "03_maku", new int[] { 1, 1, 0, 0, 0, 0, 0, 0, 0 }),
-				new Card(3, "03_akatan",
-						new int[] { 0, 0, 0, 0, 1, 0, 1, 0, 0 }),
-				new Card(3, "03_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(3, "03_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(4, "04_hototogisu", new int[] { 0, 0, 0, 0, 0, 0, 0,
-						1, 0 }),
-				new Card(4, "04_tan", new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0 }),
-				new Card(4, "04_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(4, "04_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(5, "05_yatsuhashi", new int[] { 0, 0, 0, 0, 0, 0, 0,
-						1, 0 }),
-				new Card(5, "05_tan", new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0 }),
-				new Card(5, "05_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(5, "05_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(6, "06_cho", new int[] { 0, 0, 0, 1, 0, 0, 0, 1, 0 }),
-				new Card(6, "06_aotan", new int[] { 0, 0, 0, 0, 0, 1, 1, 0, 0 }),
-				new Card(6, "06_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(6, "06_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(7, "07_inoshishi", new int[] { 0, 0, 0, 1, 0, 0, 0, 1,
-						1 }),
-				new Card(7, "07_tan", new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0 }),
-				new Card(7, "07_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(7, "07_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(8, "08_tsuki", new int[] { 1, 0, 1, 0, 0, 0, 0, 0, 0 }),
-				new Card(8, "08_gan", new int[] { 0, 0, 0, 0, 0, 0, 0, 1, 0 }),
-				new Card(8, "08_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(8, "08_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(9, "09_sakazuki", new int[] { 0, 1, 1, 0, 0, 0, 0, 1,
-						0 }),
-				new Card(9, "09_aotan", new int[] { 0, 0, 0, 0, 0, 1, 1, 0, 0 }),
-				new Card(9, "09_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(9, "09_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(10, "10_shika",
-						new int[] { 0, 0, 0, 1, 0, 0, 0, 1, 0 }),
-				new Card(10, "10_aotan",
-						new int[] { 0, 0, 0, 0, 0, 1, 1, 0, 0 }),
-				new Card(10, "10_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(10, "10_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(11, "11_ame",
-						new int[] { -5, -1, -1, 0, 0, 0, 0, 0, 0 }),
-				new Card(11, "11_tsubame", new int[] { 0, 0, 0, 0, 0, 0, 0, 1,
-						0 }),
-				new Card(11, "11_tan", new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0 }),
-				new Card(11, "11_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(12, "12_houou",
-						new int[] { 1, 0, 0, 0, 0, 0, 0, 0, 0 }),
-				new Card(12, "12_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(12, "12_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }),
-				new Card(12, "12_kasu", new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }) };
-		int cnt = 0;
-		while (cnt < 48) {
-			int idx = rnd.nextInt(48);
-			if (!yama.contains(c[idx])) {
-				yama.add(c[idx]);
-				cnt += 1;
-			}
-		}
-		return yama;
 	}
 
 	private void findMach(Player p, Card c, Field field) {
