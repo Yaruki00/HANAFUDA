@@ -1,25 +1,25 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+abstract class Player {
 	protected String name;
 	protected List<Card> haveCards, gotCards;
 	protected int[] flags, koikoi;
 
-	public String getName() {
-		return name;
-	}
-	
-	public int[] getKoikoi() {
-		return koikoi;
-	}
-	
 	public Player(List<Card> cards) {
 		haveCards = new ArrayList<Card>(8);
 		haveCards.addAll(cards);
 		gotCards = new ArrayList<Card>(40);
 		flags = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		koikoi = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int[] getKoikoi() {
+		return koikoi;
 	}
 
 	public void removeCard(Card c) {
@@ -112,15 +112,7 @@ public class Player {
 		return finish;
 	}
 
-	public boolean willFinish() {
-		return false;
-	}
-	
-	public Card openCard() {
-		return null;
-	}
-
-	public Card choiceCard(List<Card> available) {
-		return null;
-	}
+	abstract public boolean willFinish();
+	abstract public Card openCard();
+	abstract public Card choiceCard(List<Card> available);
 }
