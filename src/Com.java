@@ -8,7 +8,7 @@ public class Com extends Player {
 	}
 
 	@Override
-	public Card openCard() {
+	public Card openCard(List<Card> field) {
 		Random rnd = new Random();
 		int idx = rnd.nextInt(haveCards.size());
 		IO.comOpen(haveCards.get(idx).getName());

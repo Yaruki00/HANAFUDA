@@ -7,7 +7,7 @@ public class You extends Player {
 	}
 
 	@Override
-	public Card openCard() {
+	public Card openCard(List<Card> field) {
 		return haveCards.get(IO.openYouCard(haveCards.size()));
 	}
 

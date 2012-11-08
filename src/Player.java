@@ -113,6 +113,6 @@ abstract class Player {
 	}
 
 	abstract public boolean willFinish();
-	abstract public Card openCard();
+	abstract public Card openCard(List<Card> field);
 	abstract public Card choiceCard(List<Card> available);
 }

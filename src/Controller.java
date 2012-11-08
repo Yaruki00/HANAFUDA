@@ -33,7 +33,7 @@ public class Controller {
 				IO.showHand(first.getCardList());
 			}
 			// open card
-			Card open = first.openCard();
+			Card open = first.openCard(field.getCardList());
 			findMach(first, open, field);
 			// finish?
 			if (first.canFinish()) {
@@ -61,7 +61,7 @@ public class Controller {
 				IO.showHand(second.getCardList());
 			}
 			// open card
-			open = second.openCard();
+			open = second.openCard(field.getCardList());
 			findMach(second, open, field);
 			// finish?
 			if (second.canFinish()) {
