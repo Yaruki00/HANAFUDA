@@ -35,13 +35,6 @@ public class Controller {
 			// open card
 			Card open = first.openCard(field.getCardList());
 			findMach(first, open, field);
-			// finish?
-			if (first.canFinish()) {
-				if (first.willFinish()) {
-					winner = first;
-					break;
-				}
-			}
 			// draw card
 			Card draw = yama.drawCard();
 			IO.showDraw(draw.getName());
@@ -63,13 +56,6 @@ public class Controller {
 			// open card
 			open = second.openCard(field.getCardList());
 			findMach(second, open, field);
-			// finish?
-			if (second.canFinish()) {
-				if (second.willFinish()) {
-					winner = second;
-					break;
-				}
-			}
 			// draw card
 			draw = yama.drawCard();
 			IO.showDraw(draw.getName());
