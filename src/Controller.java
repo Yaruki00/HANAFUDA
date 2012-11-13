@@ -102,12 +102,21 @@ public class Controller {
 			p.addPair(available.get(0), c);
 			p.removeCard(c);
 			field.removeCard(available.get(0));
-		} else {
+		} else if (available.size() == 2){
 			Card choice = p.choiceCard(available);
 			IO.getPair(p.getName(), choice.getName(), c.getName());
 			p.addPair(choice, c);
 			p.removeCard(c);
 			field.removeCard(choice);
+		} else if (available.size() == 3) {
+			IO.getPair(p.getName(), available.get(0).getName(), c.getName());
+			IO.getPair(p.getName(), available.get(1).getName(), available.get(2).getName());
+			p.addPair(available.get(0), c);
+			p.addPair(available.get(1), available.get(2));
+			p.removeCard(c);
+			field.removeCard(available.get(0));
+			field.removeCard(available.get(1));
+			field.removeCard(available.get(2));
 		}
 	}
 
